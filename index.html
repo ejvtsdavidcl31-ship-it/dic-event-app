@@ -3,288 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dic Event App — Ecosistema Transaccional de Eventos</title>
-    <!-- Tailwind CSS (Estilos Tech Minimalist) -->
+    <title>Dic Event App - Aplicación de Eventos</title>
+    <!-- Tailwind CSS desde CDN para estilos y diseño responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: '#0F172A',
-                        cyanAccent: '#06B6D4',
-                        coralAccent: '#FF5733',
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Librería Supabase para Base de Datos y Subida de Fotos -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .hidden-view { display: none; }
+        .view-section {
+            display: none;
+        }
+        .view-section.active {
+            display: block;
+        }
     </style>
 </head>
-<body class="bg-navy text-slate-100 min-h-screen flex flex-col justify-between antialiased">
-        !-- BARRA DE NAVEGACIÓN SUPERIOR -->
-<nav class="border-b border-slate-800 bg-navy/90 backdrop-blur sticky top-0 z-50 px-4 py-3">
-    <div class="max-w-5xl mx-auto flex items-center justify-between">
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="mostrarVista('vista-inicio')">
-            <!-- ISOTIPO OFICIAL DIC EVENT APP -->
-            <div class="w-10 h-10 bg-gradient-to-tr from-cyanAccent to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-cyanAccent/20">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7M5 7l4 4L19 3" />
-                </svg>
-            </div>
-            <span class="font-bold text-xl text-white tracking-tight">Dic Event App</span>
-        </div>
-        <button onclick="mostrarVista('vista-inicio')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 cursor-pointer">
-            Cambiar Rol
-        </button>
-    </div>
-</nav>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
 
-<!-- PANTALLA 1: SELECTOR DE ROL (INICIO) -->
-<section id="vista-inicio" class="vista-seccion vista-activa max-w-4xl mx-auto px-4 py-10 w-full my-auto">
-    <div class="text-center mb-10">
-        <!-- ISOTIPO GRANDE HERO -->
-        <div class="w-20 h-20 bg-gradient-to-tr from-cyanAccent to-blue-600 rounded-3xl mx-auto flex items-center justify-center shadow-xl shadow-cyanAccent/20 mb-4">
-            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7M5 7l4 4L19 3" />
-            </svg>
-        </div>
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-2">Bienvenido a Dic Event App</h1>
-        <p class="text-cyanAccent font-medium text-sm sm:text-base uppercase tracking-wider mb-2">Tu evento perfecto, bajo control</p>
-        <p class="text-slate-400 text-sm max-w-md mx-auto">Selecciona tu perfil para ingresar a la plataforma transaccional.</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- TARJETA CLIENTE -->
-        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-cyanAccent/50 transition shadow-xl">
-            <div>
-                <div class="p-3 bg-cyanAccent/10 text-cyanAccent rounded-xl w-fit mb-4">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    <!-- BARRA DE NAVEGACIÓN SUPERIOR CON LOGO -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- LOGOTIPO / ISOTIPO -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showView('home')">
+                <div class="w-10 h-10 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center font-bold text-xl text-white shadow-md">
+                    D
                 </div>
-                <span class="text-xs font-semibold uppercase tracking-wider text-cyanAccent">Portal Clientes</span>
-                <h2 class="text-xl font-bold text-white mt-1 mb-2">Soy Organizador</h2>
-                <p class="text-slate-400 text-sm mb-6">Busco cotizar, personalizar y contratar salones, banquetes, música y servicios para mi evento social.</p>
-            </div>
-            <button type="button" onclick="mostrarVista('vista-cliente')" class="w-full bg-coralAccent hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 cursor-pointer">
-                <span>Comenzar a Crear mi Evento</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </button>
-        </div>
-
-        <!-- TARJETA PROVEEDOR -->
-        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-slate-600 transition shadow-xl">
-            <div>
-                <div class="p-3 bg-slate-800 text-slate-300 rounded-xl w-fit mb-4">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                </div>
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Portal Proveedores</span>
-                <h2 class="text-xl font-bold text-white mt-1 mb-2">Soy Socio Comercial</h2>
-                <p class="text-slate-400 text-sm mb-6">Ofrezco servicios para eventos. Quiero publicar mi catálogo sin costo, gestionar mi agenda y recibir pagos seguros.</p>
-            </div>
-            <button type="button" onclick="mostrarVista('vista-proveedor')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-xl border border-slate-700 transition flex items-center justify-center space-x-2 cursor-pointer">
-                <span>Registro de Socio Comercial</span>
-                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </button>
-        </div>
-    </div>
-</section>
-
-<!-- PANTALLA 2: FORMULARIO DE ALTA DE SOCIO COMERCIAL (PROVEEDOR) -->
-<section id="vista-proveedor" class="vista-seccion max-w-3xl mx-auto px-4 py-8 w-full">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
-        <div class="border-b border-slate-800 pb-4 mb-6">
-            <span class="text-xs font-semibold text-cyanAccent uppercase tracking-wider">Onboarding sin Tarjeta</span>
-            <h2 class="text-2xl font-bold text-white mt-1">Ficha de Alta de Socio Comercial</h2>
-            <p class="text-slate-400 text-xs mt-1">El registro es 100% gratuito. No solicitamos tarjetas de crédito ni cobramos mensualidades fijas.</p>
-        </div>
-
-        <form id="form-proveedor" onsubmit="guardarProveedor(event)" class="space-y-6">
-            <div>
-                <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">1. Datos Generales del Negocio</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Nombre Comercial / Marca *</label>
-                        <input type="text" id="prov-nombre" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Titular o Representante *</label>
-                        <input type="text" id="prov-titular" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">WhatsApp de Atención *</label>
-                        <input type="tel" id="prov-whatsapp" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Municipio / Zona de Cobertura *</label>
-                        <select id="prov-zona" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none">
-                            <option value="Tequisquiapan">Tequisquiapan</option>
-                            <option value="San Juan del Río">San Juan del Río</option>
-                            <option value="Querétaro Capital">Querétaro Capital</option>
-                        </select>
-                    </div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-lg tracking-tight text-white">Dic Event App</span>
+                    <span class="text-xs text-cyan-400">Eventos & Logística</span>
                 </div>
             </div>
 
-            <div class="border-t border-slate-800 pt-4">
-                <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">2. Categoría y Catálogo Principal</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Categoría Principal *</label>
-                        <select id="prov-categoria" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none">
-                            <option value="Salón / Jardín">Salón / Jardín de Fiestas</option>
-                            <option value="Banquetes / Catering">Banquetes / Catering</option>
-                            <option value="Mobiliario y Loza">Alquiler de Mobiliario y Loza</option>
-                            <option value="Música / DJ / Grupo">Música / DJ / Grupo</option>
-                            <option value="Fotografía y Video">Fotografía y Video</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Precio Base ($ MXN) *</label>
-                        <input type="number" id="prov-precio" required placeholder="Ej. 15000" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none">
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <label class="block text-xs font-medium text-slate-400 mb-1">Descripción de Inclusiones del Paquete *</label>
-                    <textarea id="prov-descripcion" rows="3" required placeholder="Describe qué incluye tu servicio..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none"></textarea>
-                </div>
-            </div>
+            <!-- BOTONES DE NAVEGACIÓN DE ESCRITORIO -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <button onclick="showView('home')" class="hover:text-cyan-400 transition-colors">Inicio</button>
+                <button onclick="showView('events')" class="hover:text-cyan-400 transition-colors">Eventos</button>
+                <button onclick="showView('catalog')" class="hover:text-cyan-400 transition-colors">Mobiliario y Servicios</button>
+                <button onclick="showView('cards')" class="hover:text-cyan-400 transition-colors">Métodos de Pago</button>
+            </nav>
 
-            <div class="border-t border-slate-800 pt-4">
-                <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">3. Galería Fotográfica</h3>
-                <label class="block text-xs font-medium text-slate-400 mb-1">Selecciona fotos de tu servicio *</label>
-                <input type="file" id="prov-fotos" multiple accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyanAccent/10 file:text-cyanAccent hover:file:bg-cyanAccent/20">
-            </div>
-
-            <div class="border-t border-slate-800 pt-4">
-                <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">4. Datos Bancarios para Recepción de Fondos (Escrow)</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Banco Receptor *</label>
-                        <input type="text" id="prov-banco" required placeholder="Ej. BBVA / Banamex" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">CLABE Interbancaria (18 dígitos) *</label>
-                        <input type="text" id="prov-clabe" maxlength="18" required placeholder="18 dígitos" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-cyanAccent focus:outline-none">
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit" class="w-full bg-cyanAccent hover:bg-cyan-500 text-navy font-bold py-3 px-6 rounded-xl shadow-lg transition cursor-pointer">
-                Activar mi Perfil de Socio Comercial
-            </button>
-        </form>
-    </div>
-</section>
-
-<!-- PANTALLA 3: CONSTRUCTOR PARAMÉTRICO Y CATÁLOGO (CLIENTE) -->
-<section id="vista-cliente" class="vista-seccion max-w-5xl mx-auto px-4 py-8 w-full">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8">
-        <h2 class="text-2xl font-bold text-white mb-2">Diseña y Cotiza tu Evento</h2>
-        <p class="text-slate-400 text-xs mb-4">Ingresa los parámetros clave de tu celebración para consultar disponibilidad en tiempo real.</p>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-                <label class="block text-xs font-medium text-slate-400 mb-1">Fecha del Evento</label>
-                <input type="date" id="filtro-fecha" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-slate-400 mb-1">Zona / Municipio</label>
-                <select id="filtro-zona" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
-                    <option value="Tequisquiapan">Tequisquiapan</option>
-                    <option value="San Juan del Río">San Juan del Río</option>
-                    <option value="Querétaro Capital">Querétaro Capital</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-slate-400 mb-1">Número de Invitados</label>
-                <input type="number" id="filtro-invitados" placeholder="100" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white">
+            <!-- ACCIONES / PERFIL / LOGIN -->
+            <div class="flex items-center space-x-3">
+                <button onclick="showView('login')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                    Iniciar Sesión
+                </button>
+                <button onclick="showView('register')" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm transition-colors shadow-md">
+                    Registro
+                </button>
             </div>
         </div>
-    </div>
+    </header>
 
-    <h3 class="text-lg font-bold text-white mb-4">Proveedores Verificados Disponibles</h3>
-    <div id="catalogo-servicios" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Carga dinámica -->
-    </div>
-</section>
+    <!-- CONTENIDO PRINCIPAL CON VISTAS CONMUTABLES -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
 
-<!-- TRUST BADGES / FOOTER -->
-<footer class="py-6 px-4 border-t border-slate-800 text-center text-xs text-slate-500">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex items-center space-x-2">
-            <span class="text-emerald-400">🔒</span>
-            <span>Pagos Seguros en Custodia <strong>Escrow</strong></span>
-        </div>
-        <div class="flex items-center space-x-2">
-            <span class="text-cyanAccent">🤝</span>
-            <span>Onboarding Libre de Fricción <strong>Sin Tarjeta</strong></span>
-        </div>
-        <div class="space-x-3">
-            <a href="#" class="hover:underline text-slate-400">Términos (Hold Harmless)</a>
-            <a href="#" class="hover:underline text-slate-400">Privacidad</a>
-        </div>
-    </div>
-</footer>
-
-<!-- LÓGICA DE NAVEGACIÓN -->
-<script>
-    function mostrarVista(vistaId) {
-        const secciones = document.querySelectorAll('.vista-seccion');
-        secciones.forEach(sec => sec.classList.remove('vista-activa'));
-
-        const objetivo = document.getElementById(vistaId);
-        if(objetivo) {
-            objetivo.classList.add('vista-activa');
-        }
-
-        if (vistaId === 'vista-cliente') {
-            cargarCatalogo();
-        }
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function guardarProveedor(event) {
-        event.preventDefault();
-        alert("¡Registro Exitoso! Tu perfil de Socio Comercial ha sido activado sin costo.");
-        document.getElementById('form-proveedor').reset();
-        mostrarVista('vista-cliente');
-    }
-
-    function cargarCatalogo() {
-        const catalogoContainer = document.getElementById('catalogo-servicios');
-        const datosPrueba = [
-            { nombre: "Jardín Quinta San José", categoria: "Salón / Jardín", precio: 18000, desc: "Hermoso jardín con alberca y área techada para 250 personas." },
-            { nombre: "Banquetes & Taquizas El Rey", categoria: "Banquetes / Catering", precio: 150, desc: "Servicio de banquetes en 3 tiempos y buffet tradicional." },
-            { nombre: "DJ & Audio Profesional Querétaro", categoria: "Música / DJ / Grupo", precio: 8500, desc: "Iluminación robótica, pantalla LED y 5 horas de música continua." }
-        ];
-
-        catalogoContainer.innerHTML = datosPrueba.map(item => `
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-cyanAccent/40 transition">
-                <div class="h-36 bg-slate-800 rounded-lg mb-4 flex items-center justify-center text-slate-500 text-xs font-semibold">
-                    [Foto HD del Servicio]
-                </div>
-                <span class="text-xs font-semibold text-cyanAccent uppercase tracking-wider">${item.categoria}</span>
-                <h4 class="text-lg font-bold text-white mt-1">${item.nombre}</h4>
-                <p class="text-slate-400 text-xs mt-2 mb-4 leading-relaxed">${item.desc}</p>
-                <div class="flex items-center justify-between pt-3 border-t border-slate-800">
-                    <div>
-                        <span class="text-[10px] text-slate-500 uppercase">Desde</span>
-                        <p class="text-sm font-bold text-white">$${item.precio.toLocaleString()} MXN</p>
+        <!-- 1. VISTA DE INICIO / DASHBOARD -->
+        <section id="view-home" class="view-section active space-y-6">
+            <div class="bg-gradient-to-r from-blue-900 via-slate-800 to-slate-900 p-8 rounded-2xl border border-slate-700 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+                <div class="space-y-4 max-w-2xl">
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-white">Gestión Integral de Eventos y Renta de Equipamiento</h1>
+                    <p class="text-slate-300 text-base">Organiza eventos sociales, administra alquiler de vajilla, cristalería, loza y logística de manera automatizada desde una sola plataforma.</p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="showView('catalog')" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-6 py-3 rounded-xl shadow-lg transition-transform transform hover:-translate-y-0.5">
+                            Explorar Catálogo
+                        </button>
+                        <button onclick="showView('events')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-semibold px-6 py-3 rounded-xl transition-colors">
+                            Ver Mis Eventos
+                        </button>
                     </div>
-                    <button type="button" onclick="alert('Iniciando reservación con custodia Escrow...')" class="bg-coralAccent hover:bg-orange-600 text-white text-xs font-bold py-2 px-4 rounded-lg shadow transition cursor-pointer">
-                        Reservar
+                </div>
+                <div class="w-32 h-32 md:w-48 md:w-48 bg-slate-800 border-2 border-cyan-500/30 rounded-2xl flex flex-col items-center justify-center p-4 text-center shadow-2xl">
+                    <svg class="w-16 h-16 text-cyan-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span class="text-xs font-bold text-cyan-300 uppercase tracking-widest">Dic Event App</span>
+                </div>
+            </div>
+
+            <!-- RESUMEN DE ESTADÍSTICAS -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-md">
+                    <div class="text-slate-400 text-sm font-medium">Eventos Programados</div>
+                    <div class="text-3xl font-bold text-white mt-2">12</div>
+                    <div class="text-cyan-400 text-xs mt-1">Próximo: Evento Social (100 Personas)</div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-md">
+                    <div class="text-slate-400 text-sm font-medium">Inventario Disponible</div>
+                    <div class="text-3xl font-bold text-white mt-2">100%</div>
+                    <div class="text-emerald-400 text-xs mt-1">Vajilla, Vasos y Cubiertos listos</div>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-md">
+                    <div class="text-slate-400 text-sm font-medium">Método de Pago Activo</div>
+                    <div class="text-3xl font-bold text-white mt-2">Visa / Mastercard</div>
+                    <div class="text-slate-400 text-xs mt-1">Tarjeta terminada en **** 4321</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. VISTA DE REGISTRO DE USUARIOS -->
+        <section id="view-register" class="view-section max-w-md mx-auto">
+            <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl shadow-2xl">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-cyan-500 rounded-xl mx-auto flex items-center justify-center font-bold text-2xl text-slate-900 mb-2">D</div>
+                    <h2 class="text-2xl font-bold text-white">Crear Cuenta en Dic Event App</h2>
+                    <p class="text-slate-400 text-sm mt-1">Gestiona la logística de tus eventos fácilmente</p>
+                </div>
+                <form onsubmit="handleRegister(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nombre Completo</label>
+                        <input type="text" required placeholder="Ej. Juan Pérez" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Correo Electrónico</label>
+                        <input type="email" required placeholder="correo@ejemplo.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Contraseña</label>
+                        <input type="password" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold py-3 rounded-lg shadow-lg transition-colors mt-2">
+                        Registrarme
                     </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 3. VISTA DE INICIO DE SESIÓN -->
+        <section id="view-login" class="view-section max-w-md mx-auto">
+            <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl shadow-2xl">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-blue-600 rounded-xl mx-auto flex items-center justify-center font-bold text-2xl text-white mb-2">D</div>
+                    <h2 class="text-2xl font-bold text-white">Iniciar Sesión</h2>
+                    <p class="text-slate-400 text-sm mt-1">Ingresa a tu panel de eventos</p>
+                </div>
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Correo Electrónico</label>
+                        <input type="email" required placeholder="correo@ejemplo.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Contraseña</label>
+                        <input type="password" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg shadow-lg transition-colors mt-2">
+                        Entrar
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 4. VISTA DE REGISTRO DE TARJETAS Y PAGOS -->
+        <section id="view-cards" class="view-section max-w-lg mx-auto">
+            <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl shadow-2xl">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Registro de Tarjeta de Crédito/Débito</h2>
+                        <p class="text-xs text-slate-400">Procesamiento seguro para reserva de fechas y equipo</p>
+                    </div>
+                </div>
+                <form onsubmit="handleCardRegister(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Nombre en la Tarjeta</label>
+                        <input type="text" required placeholder="TITULAR DE LA TARJETA" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Número de Tarjeta</label>
+                        <input type="text" maxlength="19" required placeholder="0000 0000 0000 0000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">Expiración</label>
+                            <input type="text" placeholder="MM/AA" maxlength="5" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-300 mb-1">CVV</label>
+                            <input type="password" maxlength="4" required placeholder="123" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold py-3 rounded-lg shadow-lg transition-colors mt-2">
+                        Guardar Método de Pago
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 5. VISTA DE CATÁLOGO Y SERVICIOS -->
+        <section id="view-catalog" class="view-section space-y-6">
+            <h2 class="text-2xl font-bold text-white">Catálogo de Alquiler para Eventos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between">
+                    <div class="p-6">
+                        <div class="w-12 h-12 bg-cyan-500/10 text-cyan-400 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Paquete Vajilla Completa (100 Personas)</h3>
+                        <p class="text-slate-400 text-sm mt-2">Incluye platos trinches, platos para postre, tazones y cubiertos de acero inoxidable.</p>
+                    </div>
+                    <div class="p-6 bg-slate-800/50 border-t border-slate-700/50 flex items-center justify-between">
+                        <span class="text-xl font-extrabold text-cyan-400">$1,500 MXN</span>
+                        <button onclick="alert('Paquete añadido a la reserva')" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Reservar</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between">
+                    <div class="p-6">
+                        <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.703 2.703 0 00-3 0 2.704 2.704 0 01-3 0 2.703 2.703 0 00-3 0 2.701 2.701 0 01-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h6a2 2 0 012 2v1H7V5a2 2 0 012-2z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Set de Cristalería y Copas</h3>
+                        <p class="text-slate-400 text-sm mt-2">Copas de agua, copas de vino y vasos highball reforzados para eventos especiales.</p>
+                    </div>
+                    <div class="p-6 bg-slate-800/50 border-t border-slate-700/50 flex items-center justify-between">
+                        <span class="text-xl font-extrabold text-cyan-400">$850 MXN</span>
+                        <button onclick="alert('Set añadido a la reserva')" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Reservar</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between">
+                    <div class="p-6">
+                        <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Mobiliario y Mantelería</h3>
+                        <p class="text-slate-400 text-sm mt-2">Mesas redondas, sillas acojinadas y manteles elegantes con faldón.</p>
+                    </div>
+                    <div class="p-6 bg-slate-800/50 border-t border-slate-700/50 flex items-center justify-between">
+                        <span class="text-xl font-extrabold text-cyan-400">$2,200 MXN</span>
+                        <button onclick="alert('Mobiliario añadido a la reserva')" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-sm">Reservar</button>
+                    </div>
                 </div>
             </div>
-        `).join('');
-    }
-</script>
+        </section>
+
+        <!-- 6. VISTA DE EVENTOS PROGRAMADOS -->
+        <section id="view-events" class="view-section space-y-4">
+            <h2 class="text-2xl font-bold text-white">Mis Eventos y Entregas</h2>
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-700 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Reserva #1042</span>
+                        <h3 class="text-lg font-bold text-white">Reunión Familiar / Recepción</h3>
+                        <p class="text-xs text-slate-400">Fecha: 15 de Noviembre | Equipamiento: Vajilla + Cristalería (100 pax)</p>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1.5 rounded-full w-fit">Confirmado</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-300">Estado de logística: <strong class="text-white">Equipo preparado en almacén</strong></span>
+                    <button onclick="alert('Generando reporte PDF del evento...')" class="text-cyan-400 hover:underline font-semibold">Descargar Nota PDF</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER PLATAFORMA -->
+    <footer class="bg-slate-800 border-t border-slate-700 mt-12 py-6 text-center text-xs text-slate-400">
+        <p>© 2026 Dic Event App. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- LÓGICA DE NAVEGACIÓN Y FUNCIONALIDADES (JAVASCRIPT) -->
+    <script>
+        // Función principal para conmutar pantallas
+        function showView(viewId) {
+            // Ocultar todas las vistas
+            const views = document.querySelectorAll('.view-section');
+            views.forEach(v => v.classList.remove('active'));
+
+            // Activar la vista solicitada
+            const targetView = document.getElementById('view-' + viewId);
+            if (targetView) {
+                targetView.classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Manejador del Registro de Usuario
+        function handleRegister(e) {
+            e.preventDefault();
+            alert("¡Registro exitoso en Dic Event App! Redirigiendo al panel principal...");
+            showView('home');
+        }
+
+        // Manejador del Inicio de Sesión
+        function handleLogin(e) {
+            e.preventDefault();
+            alert("¡Bienvenido de nuevo! Sesión iniciada correctamente.");
+            showView('home');
+        }
+
+        // Manejador de Registro de Tarjetas
+        function handleCardRegister(e) {
+            e.preventDefault();
+            alert("¡Tarjeta guardada de forma segura! Ahora puedes realizar tus reservas directamente.");
+            showView('home');
+        }
+    </script>
 </body>
 </html>
